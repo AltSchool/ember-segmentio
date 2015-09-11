@@ -1,4 +1,5 @@
 import { moduleFor, test } from 'ember-qunit';
+import sinon from 'sinon';
 
 moduleFor('service:segmentio', 'Unit | Service | segmentio', {
   // Specify the other units that are required for this test.
@@ -14,15 +15,14 @@ test('it exists', function(assert) {
 
 test('it maps over functions from window.analytics', function(assert) {
   window.analytics = {
-    track: function() {},
-    alias: function() {},
-    identify: function() {}
+    track: sinon.stub(),
+    alias: sinon.stub(),
+    identify: sinon.stub()
   };
-
   var service = this.subject();
-
-  assert.equal(service.get('track'), window.analytics.track);
-  assert.equal(service.get('alias'), window.analytics.alias);
-  assert.equal(service.get('identify'), window.analytics.identify);
+  ['track', 'alias', 'identify'].forEach((methodName) => {
+    service[methodName]();
+    assert.ok(window.analytics[methodName].called);
+  });
 });
 
