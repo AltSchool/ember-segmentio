@@ -38,11 +38,11 @@ module.exports = {
     if (enabled && type === 'head') {
       content = [
         '<script type="text/javascript">',
-        '!function(){',
+        '(function(){',
         coreSnippet,
         'analytics.load("', config.SEGMENTIO_KEY, '");',
         'analytics.page()',
-        '}();',
+        '})();',
         '</script>'
       ].join('');
     }
