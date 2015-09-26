@@ -25,10 +25,10 @@ module.exports = {
   contentFor: function(type, config) {
     var content = '';
     var coreSnippet = readSnippet();
-    var enabled = config.SEGMENTIO_KEY && coreSnippet;
+    var enabled = config.SEGMENTIO_TOKEN && coreSnippet;
 
-    if (!config.SEGMENTIO_KEY) {
-      console.warn('ember-segmentio: Not enabled missing key "SEGMENTIO_KEY" in parent application/addon.');
+    if (!config.SEGMENTIO_TOKEN) {
+      console.warn('ember-segmentio: Not enabled missing key "SEGMENTIO_TOKEN" in parent application/addon.');
     }
 
     if (!coreSnippet) {
@@ -40,7 +40,7 @@ module.exports = {
         '<script type="text/javascript">',
         '(function(){',
         coreSnippet,
-        'analytics.load("', config.SEGMENTIO_KEY, '");',
+        'analytics.load("', config.SEGMENTIO_TOKEN, '");',
         'analytics.page()',
         '})();',
         '</script>'
