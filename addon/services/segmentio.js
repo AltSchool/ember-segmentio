@@ -2,12 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   init() {
-    if (!window.analytics) {
-      // Stub out track method to prevent
-      // errors calling `segmentio.track(...)`.
-      this.track = function(){};
-      return;
-    }
 
     // copy all functions from analytics
     Object.getOwnPropertyNames(window.analytics)

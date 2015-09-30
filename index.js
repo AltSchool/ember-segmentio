@@ -25,26 +25,33 @@ module.exports = {
   contentFor: function(type, config) {
     var content = '';
     var coreSnippet = readSnippet();
-    var enabled = config.SEGMENTIO_TOKEN && coreSnippet;
+    var hasSnippet = !!coreSnippet;
 
     if (!config.SEGMENTIO_TOKEN) {
       console.warn('ember-segmentio: Not enabled missing key "SEGMENTIO_TOKEN" in parent application/addon.');
     }
 
-    if (!coreSnippet) {
+    if (!hasSnippet) {
       console.warn('ember-segmentio: Error while reading snippet.');
     }
 
-    if (enabled && type === 'head') {
+    if (hasSnippet && type === 'head') {
       content = [
         '<script type="text/javascript">',
         '(function(){',
-        coreSnippet,
-        'analytics.load("', config.SEGMENTIO_TOKEN, '");',
-        'analytics.page()',
+        coreSnippet
+      ];
+
+      if (!!config.SEGMENTIO_TOKEN) { //only load when valid token
+        config.push('analytics.load("', config.SEGMENTIO_TOKEN, '");');
+        config.push('analytics.page();');
+      }
+
+      config.push(
         '})();',
         '</script>'
-      ].join('');
+      );
+      content = content.join('');
     }
     return content;
   }
