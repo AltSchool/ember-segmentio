@@ -48,11 +48,11 @@ module.exports = {
           .concat['  analytics.load("', config.SEGMENTIO_TOKEN, '");'];
       }
 
-      content = contentParts.concat[
+      content = contentParts.concat([
         '  analytics.page();',
         '})();',
         '</script>'
-      ].join('');
+      ]).join('');
 
     }
 
