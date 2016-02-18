@@ -45,7 +45,7 @@ module.exports = {
 
       if (enabled) { //only make call to load when token available
         contentParts = contentParts
-          .concat['  analytics.load("', config.SEGMENTIO_TOKEN, '");'];
+          .concat(['  analytics.load("', config.SEGMENTIO_TOKEN, '");']);
       }
 
       content = contentParts.concat([
