@@ -12,8 +12,7 @@ test('it exists', function(assert) {
   assert.ok(service);
 });
 
-
-test('it maps over functions from window.analytics', function(assert) {
+test('makes window.analytics regular methods available from service', function(assert) {
   window.analytics = {
     track: sinon.stub(),
     alias: sinon.stub(),
@@ -21,8 +20,12 @@ test('it maps over functions from window.analytics', function(assert) {
   };
   var service = this.subject();
   ['track', 'alias', 'identify'].forEach((methodName) => {
-    service[methodName]();
-    assert.ok(window.analytics[methodName].called);
+    let firstArg = 'firstArg';
+    let secondArg = {my: 'value'};
+    service[methodName](firstArg, secondArg);
+    assert.ok(
+      window.analytics[methodName].calledWith(firstArg, secondArg)
+    );
   });
 });
 
