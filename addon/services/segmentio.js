@@ -5,17 +5,23 @@ export default Ember.Service.extend({
     if (!window.analytics) {
       // Stub out track method to prevent
       // errors calling `segmentio.track(...)`.
+      // during development or test
       this.track = function(){};
+      this.identify = function(){};
+      this.page = function(){};
       return;
     }
 
     // copy all functions from analytics
     Object.getOwnPropertyNames(window.analytics)
       .forEach((methodName) => {
-        let origFn = window.analytics[methodName];
-        if (typeof origFn !== 'function') { return; }
-        // ensure same as calling window.analytics[methodName]() with bind
-        this[methodName] = origFn.bind(window.analytics);
+        if (typeof window.analytics[methodName] !== 'function') { 
+          return;
+        }
+        // ensure same as calling window.analytics[methodName]() by proxying
+        this[methodName] = function(...args) {
+          window.analytics[methodName].apply(window.analytics, args);
+        };
       });
   }
 });
