@@ -23,19 +23,21 @@ module.exports = {
   name: 'ember-segmentio',
 
   contentFor: function(type, config) {
-    var content = '';
-    var coreSnippet = readSnippet();
-    var enabled = config.SEGMENTIO_TOKEN && coreSnippet;
-
-    if (!config.SEGMENTIO_TOKEN) {
-      console.warn('ember-segmentio: Not enabled missing key "SEGMENTIO_TOKEN" in parent application/addon.');
-    }
-
-    if (!coreSnippet) {
-      console.warn('ember-segmentio: Error while reading snippet.');
-    }
 
     if (type === 'head') {
+
+      var content = '';
+
+      var coreSnippet = readSnippet();
+      var enabled = config.SEGMENTIO_TOKEN && coreSnippet;
+
+      if (!config.SEGMENTIO_TOKEN) {
+        console.warn('ember-segmentio: Not enabled missing key "SEGMENTIO_TOKEN" in parent application/addon.');
+      }
+
+      if (!coreSnippet) {
+        console.warn('ember-segmentio: Error while reading snippet.');
+      }
 
       var contentParts = [
         '<script type="text/javascript">',
@@ -54,9 +56,9 @@ module.exports = {
         '</script>'
       ]).join('');
 
+      return content;
     }
 
-    return content;
   }
 
 };
